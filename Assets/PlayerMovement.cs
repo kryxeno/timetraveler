@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator anim;
 
     public LayerMask groundLayer;
+    public Ghost ghost;
 
     private float dirX = 0;
     public float moveSpeed = 8;
@@ -18,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
 
     private enum MovementState { idle, running, jumping }
     private MovementState state = MovementState.idle;
+    private bool doubleJumpAvailable = true;
 
     private void Start()
     {
@@ -31,15 +33,24 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         dirX = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
 
-        if (Input.GetButtonDown("Jump") && IsGrounded()
-        )
+        bool grounded = IsGrounded();
+
+        if (grounded)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            doubleJumpAvailable = true;
         }
 
-        Debug.Log(rb.velocity);
+        Debug.Log("grounded: " + grounded);
+        Debug.Log("doubleJumpAvailable: " + doubleJumpAvailable);
+
+        rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
+
+        if (Input.GetButtonDown("Jump") && (grounded || doubleJumpAvailable))
+        {
+            if (!grounded) doubleJumpAvailable = false;
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        }
 
         UpdateAnimationState();
     }
@@ -49,17 +60,20 @@ public class PlayerMovement : MonoBehaviour
         if (dirX > 0)
         {
             state = MovementState.running;
+            ghost.makeGhost = true;
            sr.flipX = false;
         }
         else if (dirX < 0)
         {
             state = MovementState.running;
            sr.flipX = true;
+            ghost.makeGhost = true;
 
         }
         else
         {
             state = MovementState.idle;
+            ghost.makeGhost = true;
         }
 
         if (rb.velocity.y > .1f)
@@ -76,6 +90,10 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsGrounded()
     {
-        return Physics2D.BoxCast(bc.bounds.center, bc.bounds.size, 0f, Vector2.down, .1f, groundLayer);
+        Bounds bounds = bc.bounds;
+        Vector2 bottomCenter = new Vector2(bounds.center.x, bounds.min.y);
+        Vector2 bottomSize = new Vector2(bounds.size.x, bounds.size.y * 0.2f);
+
+        return Physics2D.BoxCast(bottomCenter, bottomSize, 0f, Vector2.down, .1f, groundLayer);
     }
 }
