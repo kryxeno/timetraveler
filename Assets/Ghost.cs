@@ -7,7 +7,7 @@ public class Ghost : MonoBehaviour
 
     public float ghostDelay;
     private float ghostDelaySeconds;
-    private float deactivateDelay = 6f;
+    private float deactivateDelay = 1f;
     public GameObject ghost;
     public bool makeGhost = false;
 
@@ -35,7 +35,8 @@ public class Ghost : MonoBehaviour
         else
         {
             GameObject currentGhost = ObjectPool.SharedInstance.GetPooledObject();
-            if (currentGhost != null) {
+            if (currentGhost != null)
+            {
                 currentGhost.transform.position = transform.position;
                 currentGhost.transform.rotation = transform.rotation;
                 currentGhost.SetActive(true);

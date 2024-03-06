@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundLayer;
     public Ghost ghost;
 
+    public RecordObject recordObject;
+
     private float dirX = 0;
     public float moveSpeed = 8;
     public float jumpForce = 6;
@@ -41,9 +43,6 @@ public class PlayerMovement : MonoBehaviour
             doubleJumpAvailable = true;
         }
 
-        Debug.Log("grounded: " + grounded);
-        Debug.Log("doubleJumpAvailable: " + doubleJumpAvailable);
-
         rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
 
         if (Input.GetButtonDown("Jump") && (grounded || doubleJumpAvailable))
@@ -52,21 +51,27 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
+        if (Input.GetButtonDown("Fire1"))
+        {
+            RevertTime();
+        }
+
         UpdateAnimationState();
     }
 
-    private void UpdateAnimationState() {
+    private void UpdateAnimationState()
+    {
         MovementState state;
         if (dirX > 0)
         {
             state = MovementState.running;
             ghost.makeGhost = true;
-           sr.flipX = false;
+            sr.flipX = false;
         }
         else if (dirX < 0)
         {
             state = MovementState.running;
-           sr.flipX = true;
+            sr.flipX = true;
             ghost.makeGhost = true;
 
         }
@@ -92,8 +97,20 @@ public class PlayerMovement : MonoBehaviour
     {
         Bounds bounds = bc.bounds;
         Vector2 bottomCenter = new Vector2(bounds.center.x, bounds.min.y);
-        Vector2 bottomSize = new Vector2(bounds.size.x, bounds.size.y * 0.2f);
+        Vector2 bottomSize = new Vector2(bounds.size.x * 0.9f, bounds.size.y * 0.2f);
 
         return Physics2D.BoxCast(bottomCenter, bottomSize, 0f, Vector2.down, .1f, groundLayer);
+    }
+
+    private void RevertTime()
+    {
+        if (recordObject.storedPositions.Count < recordObject.delaySeconds * 60) return;
+        transform.position = recordObject.storedPositions[0];
+        GetComponent<SpriteRenderer>().sprite = recordObject.storedSprites[0];
+        GetComponent<SpriteRenderer>().flipX = recordObject.storedDirections[0];
+        recordObject.storedPositions = new List<Vector3>();
+        recordObject.storedSprites = new List<Sprite>();
+        recordObject.storedDirections = new List<bool>();
+        Destroy(recordObject.currentGhost);
     }
 }
