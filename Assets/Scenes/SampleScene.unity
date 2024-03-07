@@ -5681,11 +5681,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ghost: {fileID: 148020736825559951, guid: bba68725ab6851c478f72b01ecfcdd31, type: 3}
-  delaySeconds: 10
+  delaySeconds: 5
   storedPositions: []
   storedDirections: 
   storedSprites: []
   currentGhost: {fileID: 0}
+  updateInterval: 0.1
 --- !u!1 &1569142745
 GameObject:
   m_ObjectHideFlags: 3

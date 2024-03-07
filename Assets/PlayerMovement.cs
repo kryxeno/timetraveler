@@ -104,13 +104,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void RevertTime()
     {
-        if (recordObject.storedPositions.Count < recordObject.delaySeconds * 60) return;
+        if (recordObject.timeSinceLastUpdate < recordObject.delaySeconds) return;
         transform.position = recordObject.storedPositions[0];
         GetComponent<SpriteRenderer>().sprite = recordObject.storedSprites[0];
         GetComponent<SpriteRenderer>().flipX = recordObject.storedDirections[0];
-        recordObject.storedPositions = new List<Vector3>();
-        recordObject.storedSprites = new List<Sprite>();
-        recordObject.storedDirections = new List<bool>();
-        Destroy(recordObject.currentGhost);
+        recordObject.ResetGhost();
     }
 }
+
