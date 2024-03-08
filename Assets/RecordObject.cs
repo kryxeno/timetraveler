@@ -7,6 +7,7 @@ public class RecordObject : MonoBehaviour
     //place this script on the player gameobject
 
     public GameObject ghost;
+    public PlayerMovement playerMovement;
     public bool ghostEnabled = true;
     public float delaySeconds = 5f;
     public List<Vector3> storedPositions;
@@ -18,12 +19,15 @@ public class RecordObject : MonoBehaviour
     public float timeSinceReset = 0f;
     private IEnumerator updateCoroutine;
 
-    void Awake()
+    public class FrameData
     {
-        storedPositions = new List<Vector3>(); //create a blank list
-        storedSprites = new List<Sprite>(); //create a blank list
-        storedDirections = new List<bool>(); //create a blank list
+        public Vector3 position;
+        public Sprite sprite;
+        public bool flipX;
+        public bool doubleJumpAvailable;
     }
+
+    public List<FrameData> storedFrames = new();
 
     void Start()
     {
@@ -74,9 +78,7 @@ public class RecordObject : MonoBehaviour
 
         timeSinceReset = 0f;
 
-        storedPositions = new List<Vector3>();
-        storedSprites = new List<Sprite>();
-        storedDirections = new List<bool>();
+        storedFrames = new List<FrameData>();
     }
 
     public void DisableGhost()
@@ -89,27 +91,28 @@ public class RecordObject : MonoBehaviour
     {
         if (currentGhost != null)
         {
-            currentGhost.transform.position = storedPositions[0]; // Move
-            currentGhost.GetComponent<SpriteRenderer>().sprite = storedSprites[0];
-            currentGhost.GetComponent<SpriteRenderer>().flipX = storedDirections[0];
+            currentGhost.transform.position = storedFrames[0].position; // Move
+            currentGhost.GetComponent<SpriteRenderer>().sprite = storedFrames[0].sprite;
+            currentGhost.GetComponent<SpriteRenderer>().flipX = storedFrames[0].flipX;
         }
     }
 
     public void RemoveOldestFrame()
     {
-        if (storedPositions.Count > 0)
-        {
-            storedPositions.RemoveAt(0);
-            storedSprites.RemoveAt(0);
-            storedDirections.RemoveAt(0);
-        }
+        if (storedFrames.Count > 0) storedFrames.RemoveAt(0);
     }
 
     public void AddNewFrame()
     {
-        storedPositions.Add(transform.position);
-        storedSprites.Add(GetComponent<SpriteRenderer>().sprite);
-        storedDirections.Add(GetComponent<SpriteRenderer>().flipX);
+        FrameData frame = new()
+        {
+            position = transform.position,
+            sprite = GetComponent<SpriteRenderer>().sprite,
+            flipX = GetComponent<SpriteRenderer>().flipX,
+            doubleJumpAvailable = playerMovement.doubleJumpAvailable
+        };
+
+        storedFrames.Add(frame);
     }
 
 }

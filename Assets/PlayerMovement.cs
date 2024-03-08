@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
 
     private enum MovementState { idle, running, jumping }
     private MovementState state = MovementState.idle;
-    private bool doubleJumpAvailable = true;
+    public bool doubleJumpAvailable = true;
 
     private void Start()
     {
@@ -61,7 +61,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateAnimationState()
     {
-        MovementState state;
         if (dirX > 0)
         {
             state = MovementState.running;
@@ -106,9 +105,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (recordObject.timeSinceReset < recordObject.delaySeconds) return;
 
-        transform.position = recordObject.storedPositions[0];
-        GetComponent<SpriteRenderer>().sprite = recordObject.storedSprites[0];
-        GetComponent<SpriteRenderer>().flipX = recordObject.storedDirections[0];
+        transform.position = recordObject.storedFrames[0].position;
+        GetComponent<SpriteRenderer>().sprite = recordObject.storedFrames[0].sprite;
+        GetComponent<SpriteRenderer>().flipX = recordObject.storedFrames[0].flipX;
+        doubleJumpAvailable = recordObject.storedFrames[0].doubleJumpAvailable;
 
         recordObject.ResetGhost();
     }
