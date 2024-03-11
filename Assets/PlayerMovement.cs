@@ -95,11 +95,11 @@ public class PlayerMovement : MonoBehaviour
     private bool IsGrounded()
     {
         Bounds bounds = bc.bounds;
-        Vector2 bottomCenter = new Vector2(bounds.center.x, bounds.min.y);
-        Vector2 bottomSize = new Vector2(bounds.size.x * 0.9f, bounds.size.y * 0.2f);
-
-        return Physics2D.BoxCast(bottomCenter, bottomSize, 0f, Vector2.down, .1f, groundLayer);
+        Vector2 bottomCenter = new(bounds.center.x, bounds.min.y);
+        RaycastHit2D hit = Physics2D.Raycast(bottomCenter, Vector2.down, 0.1f, groundLayer);
+        return hit.collider != null;
     }
+
 
     private void RevertTime()
     {

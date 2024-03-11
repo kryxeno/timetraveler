@@ -5,9 +5,9 @@ using UnityEngine;
 public class Parralax : MonoBehaviour
 {
 
-    private float length, startposX, height, startposY;
+    private float length, startposX, startposY;
     public GameObject cam;
-    public float parralaxEffectX, parralaxEffectY;
+    public float parralaxEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -15,17 +15,15 @@ public class Parralax : MonoBehaviour
         startposX = transform.position.x;
         startposY = transform.position.y;
         length = GetComponent<SpriteRenderer>().bounds.size.x;
-        height = GetComponent<SpriteRenderer>().bounds.size.y;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float tempX = (cam.transform.position.x * (1 - parralaxEffectX));
-        float distX = (cam.transform.position.x * parralaxEffectX);
+        float tempX = cam.transform.position.x * (1 - parralaxEffect);
+        float distX = cam.transform.position.x * parralaxEffect;
 
-        float tempY = (cam.transform.position.y * (1 - parralaxEffectY));
-        float distY = (cam.transform.position.y * parralaxEffectY);
+        float distY = cam.transform.position.y * parralaxEffect;
 
         transform.position = new Vector3(startposX + distX, startposY + distY, transform.position.z);
 

@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Collectible
+  - TimeCollectible
   layers:
   - Default
   - TransparentFX
@@ -50,9 +52,18 @@ TagManager:
   - name: -2
     uniqueID: 2976655591
     locked: 0
+  - name: MechanicalBackground
+    uniqueID: 788483735
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
   - name: -1
     uniqueID: 216447611
+    locked: 0
+  - name: MechanicalForeground
+    uniqueID: 236457319
+    locked: 0
+  - name: UI
+    uniqueID: 3283692157
     locked: 0

@@ -5,7 +5,8 @@ using UnityEngine;
 public class Lever : MonoBehaviour
 {
     public GameObject player;
-    public float rotateAngle = 25;
+    private float rotateAngle = 25;
+    private Transform handle;
     private Vector3 pivot;
 
     private bool active = false;
@@ -17,9 +18,9 @@ public class Lever : MonoBehaviour
     void Start()
     {
         pivot = transform.GetChild(0).position;
-        transform.RotateAround(pivot, Vector3.forward, rotateAngle * (active ? -1 : 1));
+        handle = transform.Find("LeverHandle");
+        handle.RotateAround(pivot, Vector3.forward, rotateAngle * (active ? -1 : 1));
         updateLinkedObjects();
-
     }
 
     void Update()
@@ -56,11 +57,11 @@ public class Lever : MonoBehaviour
             active = !active;
             if (active)
             {
-                transform.RotateAround(pivot, Vector3.forward, rotateAngle * -2);
+                handle.RotateAround(pivot, Vector3.forward, rotateAngle * -2);
             }
             else
             {
-                transform.RotateAround(pivot, Vector3.forward, rotateAngle * 2);
+                handle.RotateAround(pivot, Vector3.forward, rotateAngle * 2);
             }
 
             updateLinkedObjects();

@@ -48,8 +48,13 @@ public class RecordObject : MonoBehaviour
 
     private IEnumerator UpdateGhost()
     {
-        while (ghostEnabled)
+        while (true)
         {
+            if (!ghostEnabled)
+            {
+                yield return new WaitForSeconds(updateInterval);
+                continue;
+            }
             if (currentGhost == null)
             {
                 currentGhost = Instantiate(ghost, transform.position, transform.rotation);
@@ -62,7 +67,7 @@ public class RecordObject : MonoBehaviour
                 UpdateGhostPosition();
                 RemoveOldestFrame();
             }
-
+            Debug.Log("Adding new frame");
             AddNewFrame();
 
             yield return new WaitForSeconds(updateInterval);
@@ -85,6 +90,12 @@ public class RecordObject : MonoBehaviour
     {
         ResetGhost();
         ghostEnabled = false;
+    }
+
+    public void EnableGhost()
+    {
+        ResetGhost();
+        ghostEnabled = true;
     }
 
     public void UpdateGhostPosition()
