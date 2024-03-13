@@ -42,9 +42,9 @@ public class PressableButton : MonoBehaviour
             MoveTo(originalPosition, relativeExitSpeed);
             relativeExitSpeed += exitSpeed / 5;
         }
-        if (transform.position.y < originalPosition.y - height / 4)
+        if ((transform.position.y < originalPosition.y - height / 4))
         {
-            if (!active) UpdateLinkedObjects(true);
+            if (!active || activePermanently) UpdateLinkedObjects(true);
             active = true;
             this.GetComponent<SpriteRenderer>().color = Color.red;
         }
