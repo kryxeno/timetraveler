@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 5056209349011953480}
   m_Layer: 6
   m_Name: Platform
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -230,3 +230,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   active: 1
+  continuous: 0

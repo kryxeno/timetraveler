@@ -13,6 +13,7 @@ public class RecordObject : MonoBehaviour
     public List<Vector3> storedPositions;
     public List<bool> storedDirections;
     public List<Sprite> storedSprites;
+    public Ghost ghostScript;
 
     public GameObject currentGhost;
     public float updateInterval = 0.1f;
@@ -67,7 +68,8 @@ public class RecordObject : MonoBehaviour
                 UpdateGhostPosition();
                 RemoveOldestFrame();
             }
-            Debug.Log("Adding new frame");
+
+
             AddNewFrame();
 
             yield return new WaitForSeconds(updateInterval);
@@ -90,12 +92,14 @@ public class RecordObject : MonoBehaviour
     {
         ResetGhost();
         ghostEnabled = false;
+        ghostScript.makeGhost = false;
     }
 
     public void EnableGhost()
     {
         ResetGhost();
         ghostEnabled = true;
+        ghostScript.makeGhost = true;
     }
 
     public void UpdateGhostPosition()

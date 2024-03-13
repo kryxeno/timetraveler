@@ -20,14 +20,12 @@ public class Ghost : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (makeGhost == true)
-        {
-            ShowGhostInstance();
-        }
+        ShowGhostInstance();
     }
 
     private void ShowGhostInstance()
     {
+        if (!makeGhost) return;
         if (ghostDelaySeconds > 0)
         {
             ghostDelaySeconds -= Time.deltaTime;
@@ -49,7 +47,7 @@ public class Ghost : MonoBehaviour
             StartCoroutine(DeactivateGhostAfterDelay(currentGhost, deactivateDelay));
         }
     }
-    // Coroutine to delay deactivating the ghost
+
     private IEnumerator DeactivateGhostAfterDelay(GameObject ghost, float delay)
     {
         yield return new WaitForSeconds(delay);

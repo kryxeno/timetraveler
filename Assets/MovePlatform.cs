@@ -13,6 +13,8 @@ public class MovePlatform : MonoBehaviour
 
     public bool continuous = false;
 
+
+
     void Start()
     {
         pathStart = transform.position;
@@ -23,15 +25,24 @@ public class MovePlatform : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (transform.position == pathStart && (!active || continuous))
+        if (continuous)
         {
-            //If current location of platform is start position,
-            target = pathEnd; // set end position as target.
+            if (transform.position == pathStart)
+            {
+                target = pathEnd;
+            }
+            else if (transform.position == pathEnd)
+            {
+                target = pathStart;
+            }
         }
-        else if (transform.position == pathEnd && (active || continuous))
+        else if (active)
         {
-            //If current location of platform is end position,
-            target = pathStart; // set start position as target.
+            target = pathEnd;
+        }
+        else
+        {
+            target = pathStart;
         }
 
         bool continuousCanMove = continuous && active;

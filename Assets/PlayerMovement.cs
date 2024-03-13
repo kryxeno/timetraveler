@@ -11,8 +11,6 @@ public class PlayerMovement : MonoBehaviour
     private Animator anim;
 
     public LayerMask groundLayer;
-    public Ghost ghost;
-
     public RecordObject recordObject;
 
     private float dirX = 0;
@@ -64,20 +62,17 @@ public class PlayerMovement : MonoBehaviour
         if (dirX > 0)
         {
             state = MovementState.running;
-            ghost.makeGhost = true;
             sr.flipX = false;
         }
         else if (dirX < 0)
         {
             state = MovementState.running;
             sr.flipX = true;
-            ghost.makeGhost = true;
 
         }
         else
         {
             state = MovementState.idle;
-            ghost.makeGhost = true;
         }
 
         if (rb.velocity.y > .1f)
