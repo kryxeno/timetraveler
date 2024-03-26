@@ -9,6 +9,7 @@ TagManager:
   - Water
   - Ground
   - Checkpoint
+  - VirtualCam
   layers:
   - Default
   - TransparentFX

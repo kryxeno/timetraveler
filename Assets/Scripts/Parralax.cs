@@ -8,6 +8,7 @@ public class Parralax : MonoBehaviour
     private float length, startposX, startposY;
     public GameObject cam;
     public float parralaxEffect;
+    public bool enableY = false;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +24,7 @@ public class Parralax : MonoBehaviour
         float tempX = cam.transform.position.x * (1 - parralaxEffect);
         float distX = cam.transform.position.x * parralaxEffect;
 
-        float distY = cam.transform.position.y * parralaxEffect;
+        float distY = enableY ? cam.transform.position.y * parralaxEffect : 0;
 
         transform.position = new Vector3(startposX + distX, startposY + distY, transform.position.z);
 

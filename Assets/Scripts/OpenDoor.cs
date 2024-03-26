@@ -46,16 +46,17 @@ public class OpenDoor : MonoBehaviour
     }
     public void DoorAnimation(bool open)
     {
-        Transform innerDoor = transform.Find("InnerDoor");
-        float doorWidth = innerDoor.GetComponent<SpriteRenderer>().bounds.size.x;
-        Vector3 doorPosition = innerDoor.position;
+        // float doorWidth = transform.GetComponent<SpriteRenderer>().bounds.size.x;
+        // Vector3 doorPosition = transform.position;
         if (open)
         {
-            OpenDoorAnimation(innerDoor, doorWidth, doorPosition);
+            // OpenDoorAnimation(transform, doorWidth, doorPosition);
+            gameObject.SetActive(false);
         }
         else
         {
-            CloseDoorAnimation(innerDoor, doorWidth, doorPosition);
+            // CloseDoorAnimation(transform, doorWidth, doorPosition);
+            gameObject.SetActive(true);
         }
     }
 
