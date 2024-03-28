@@ -12,12 +12,13 @@ public class PlayerMovement : MonoBehaviour
 
     public LayerMask groundLayer;
     public RecordObject recordObject;
+    public ControlTime controlTime;
 
     private float dirX = 0;
     public float moveSpeed = 8;
     public float jumpForce = 6;
 
-    private enum MovementState { idle, running, jumping }
+    private enum MovementState { idle, running, jumping, falling }
     private MovementState state = MovementState.idle;
     public bool doubleJumpAvailable = true;
 
@@ -51,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            RevertTime();
+            ToggleGhost();
         }
 
         UpdateAnimationState();
@@ -81,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (rb.velocity.y < -.1f)
         {
-            state = MovementState.idle;
+            state = MovementState.falling;
         }
 
         anim.SetInteger("state", (int)state);
@@ -106,6 +107,11 @@ public class PlayerMovement : MonoBehaviour
         doubleJumpAvailable = recordObject.storedFrames[0].doubleJumpAvailable;
 
         recordObject.ResetGhost();
+    }
+
+    private void ToggleGhost()
+    {
+        controlTime.RevertTime();
     }
 }
 

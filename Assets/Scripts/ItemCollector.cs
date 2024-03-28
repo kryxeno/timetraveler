@@ -10,6 +10,7 @@ public class ItemCollector : MonoBehaviour
     public Text collectibleText;
 
     public RecordObject recordObject;
+    public ControlTime controlTime;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -22,7 +23,8 @@ public class ItemCollector : MonoBehaviour
         if (other.gameObject.CompareTag("TimeCollectible"))
         {
             Destroy(other.gameObject);
-            recordObject.EnableGhost();
+            // recordObject.EnableGhost();
+            controlTime.SetControl(true);
         }
     }
 }
