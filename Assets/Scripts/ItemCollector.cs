@@ -5,26 +5,31 @@ using UnityEngine.UI;
 
 public class ItemCollector : MonoBehaviour
 {
-    private int collectibles = 0;
-
-    public Text collectibleText;
-
-    public RecordObject recordObject;
     public ControlTime controlTime;
+    public List<GameObject> collectibles;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Collectible"))
         {
             Destroy(other.gameObject);
-            collectibles++;
-            collectibleText.text = "Collectibles: " + collectibles.ToString();
+
+            foreach (GameObject collectible in collectibles)
+            {
+                if (collectible.name == other.gameObject.name)
+                {
+                    collectible.SetActive(true);
+                    FindObjectOfType<AudioManager>().Play("Success");
+                    break;
+                }
+            }
         }
         if (other.gameObject.CompareTag("TimeCollectible"))
         {
             Destroy(other.gameObject);
-            // recordObject.EnableGhost();
             controlTime.SetControl(true);
+            FindObjectOfType<AudioManager>().Play("Powerup");
+
         }
     }
 }

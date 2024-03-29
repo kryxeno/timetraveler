@@ -19,6 +19,7 @@ public class CheckpointSystem : MonoBehaviour
     public void ReturnToCheckpoint()
     {
         this.transform.position = currentCheckpoint.transform.position;
+        this.GetComponent<ControlTime>().ResetGhost();
     }
 
     public void ResetLevel()

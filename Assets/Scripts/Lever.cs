@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Lever : MonoBehaviour
 {
-    public GameObject player;
     private float rotateAngle = 25;
     private Transform handle;
     private Vector3 pivot;
@@ -13,13 +12,15 @@ public class Lever : MonoBehaviour
     private bool canInteract = false;
 
     public List<GameObject> linkedPlatforms = new List<GameObject>(); // List of platforms controlled by the lever
+    private enum MovementState { off, on }
+    private MovementState state = MovementState.off;
 
+    private Animator anim;
 
     void Start()
     {
-        pivot = transform.GetChild(0).position;
-        handle = transform.Find("LeverHandle");
-        handle.RotateAround(pivot, Vector3.forward, rotateAngle * (active ? -1 : 1));
+        anim = GetComponent<Animator>();
+
         updateLinkedObjects();
     }
 
@@ -28,6 +29,7 @@ public class Lever : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && canInteract)
         {
             Debug.Log("E pressed");
+            FindObjectOfType<AudioManager>().Play("Click");
             UpdateLeverPosition();
         }
 
@@ -35,7 +37,7 @@ public class Lever : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject == player)
+        if (other.gameObject.CompareTag("Player"))
         {
             canInteract = true;
         }
@@ -43,7 +45,7 @@ public class Lever : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject == player)
+        if (other.gameObject.CompareTag("Player"))
         {
             canInteract = false;
         }
@@ -51,25 +53,13 @@ public class Lever : MonoBehaviour
 
     void UpdateLeverPosition()
     {
-        // Rotate the lever
-        if (pivot != null)
-        {
-            active = !active;
-            if (active)
-            {
-                handle.RotateAround(pivot, Vector3.forward, rotateAngle * -2);
-            }
-            else
-            {
-                handle.RotateAround(pivot, Vector3.forward, rotateAngle * 2);
-            }
+        active = !active;
+        state = active ? MovementState.on : MovementState.off;
 
-            updateLinkedObjects();
-        }
-        else
-        {
-            Debug.LogError("Lever pivot not found!");
-        }
+        anim.SetInteger("state", (int)state);
+
+        updateLinkedObjects();
+
     }
     void updateLinkedObjects()
     {

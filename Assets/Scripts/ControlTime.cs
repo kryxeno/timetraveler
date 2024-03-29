@@ -53,6 +53,7 @@ public class ControlTime : MonoBehaviour
             playerMovement.doubleJumpAvailable = ghostPosition.doubleJumpAvailable;
             Destroy(currentGhost);
             ghostActive = false;
+            FindObjectOfType<AudioManager>().Play("Timetravel");
         }
         else
         {
@@ -66,7 +67,17 @@ public class ControlTime : MonoBehaviour
             };
             UpdateGhostState();
             ghostActive = true;
+            FindObjectOfType<AudioManager>().Play("EnableGhost");
         }
     }
 
+    public void ResetGhost()
+    {
+        if (currentGhost != null)
+        {
+            Destroy(currentGhost);
+            ghostScript.makeGhost = false;
+            ghostActive = false;
+        }
+    }
 }

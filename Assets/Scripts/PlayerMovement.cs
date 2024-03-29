@@ -48,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!grounded) doubleJumpAvailable = false;
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            FindObjectOfType<AudioManager>().Play("Jump");
         }
 
         if (Input.GetButtonDown("Fire1"))

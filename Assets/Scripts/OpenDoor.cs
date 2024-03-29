@@ -24,6 +24,7 @@ public class OpenDoor : MonoBehaviour
         {
             Debug.Log("E pressed");
             if (openPermanently && open) return;
+            FindObjectOfType<AudioManager>().Play("DoorOpen");
             open = !open;
             DoorAnimation(open);
         }
