@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ItemCollector : MonoBehaviour
 {
     public ControlTime controlTime;
     public List<GameObject> collectibles;
+    public float keys = 0;
+    public TextMeshProUGUI keyText;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -31,5 +34,18 @@ public class ItemCollector : MonoBehaviour
             FindObjectOfType<AudioManager>().Play("Powerup");
 
         }
+        if (other.gameObject.CompareTag("Key"))
+        {
+            Destroy(other.gameObject);
+            FindObjectOfType<AudioManager>().Play("Success");
+            keys++;
+            keyText.text = keys.ToString();
+        }
+    }
+
+    public void SetKeys(float _keys)
+    {
+        this.keys = _keys;
+        keyText.text = keys.ToString();
     }
 }

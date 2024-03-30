@@ -10,6 +10,7 @@ TagManager:
   - Ground
   - Checkpoint
   - VirtualCam
+  - Key
   layers:
   - Default
   - TransparentFX

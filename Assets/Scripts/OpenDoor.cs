@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class OpenDoor : MonoBehaviour
 {
     public bool open = false;
     public bool openPermanently = true;
     public bool locked = false;
-    public GameObject player;
+    public TextMeshProUGUI lockedText;
     private bool canInteract = false;
 
     void Start()
@@ -24,6 +25,20 @@ public class OpenDoor : MonoBehaviour
         {
             Debug.Log("E pressed");
             if (openPermanently && open) return;
+            if (locked && !open)
+            {
+                float keys = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemCollector>().keys;
+                if (keys == 0)
+                {
+                    FindObjectOfType<AudioManager>().Play("LockedDoor");
+                    lockedText.gameObject.SetActive(true);
+                    return;
+                }
+                else
+                {
+                    GameObject.FindGameObjectWithTag("Player").GetComponent<ItemCollector>().SetKeys(keys - 1);
+                }
+            };
             FindObjectOfType<AudioManager>().Play("DoorOpen");
             open = !open;
             DoorAnimation(open);
@@ -32,7 +47,7 @@ public class OpenDoor : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject == player)
+        if (other.gameObject.CompareTag("Player"))
         {
             canInteract = true;
         }
@@ -40,7 +55,7 @@ public class OpenDoor : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject == player)
+        if (other.gameObject.CompareTag("Player"))
         {
             canInteract = false;
         }
