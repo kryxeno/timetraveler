@@ -42,16 +42,19 @@ public class PressableButton : MonoBehaviour
             MoveTo(originalPosition, relativeExitSpeed);
             relativeExitSpeed += exitSpeed / 5;
         }
-        if ((transform.position.y < originalPosition.y - height / 4 && !active))
+        if ((transform.position.y < originalPosition.y - height / 4))
         {
-            if (!active || activePermanently) UpdateLinkedObjects(true);
-            active = true;
-            FindObjectOfType<AudioManager>().Play("Click");
-            this.GetComponent<SpriteRenderer>().color = Color.red;
+            if (!active)
+            {
+                UpdateLinkedObjects(true);
+                active = true;
+                FindObjectOfType<AudioManager>().Play("Click");
+                this.GetComponent<SpriteRenderer>().color = Color.red;
+            }
         }
-        else if (!activePermanently)
+        else if (!activePermanently && active)
         {
-            if (active) UpdateLinkedObjects(false);
+            UpdateLinkedObjects(false);
             active = false;
             this.GetComponent<SpriteRenderer>().color = originalColor;
         }
