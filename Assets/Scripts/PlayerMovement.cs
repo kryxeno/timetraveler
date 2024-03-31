@@ -91,11 +91,16 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsGrounded()
     {
+        float extendDistance = 0.3f;
         Bounds bounds = bc.bounds;
-        Vector2 bottomCenter = new(bounds.center.x, bounds.min.y);
-        RaycastHit2D hit = Physics2D.Raycast(bottomCenter, Vector2.down, 0.1f, groundLayer);
-        return hit.collider != null;
+        Vector2 bottomCenter = new Vector2(bounds.center.x, bounds.min.y);
+        Vector2 raycastLeftOrigin = bottomCenter + new Vector2(-extendDistance, 0.0f); // Move origin slightly to the left
+        Vector2 raycastRightOrigin = bottomCenter + new Vector2(extendDistance, 0.0f); // Move origin slightly to the right
+        RaycastHit2D hitLeft = Physics2D.Raycast(raycastLeftOrigin, Vector2.down, 0.1f, groundLayer);
+        RaycastHit2D hitRight = Physics2D.Raycast(raycastRightOrigin, Vector2.down, 0.1f, groundLayer);
+        return (hitLeft.collider != null || hitRight.collider != null);
     }
+
 
 
     private void RevertTime()
