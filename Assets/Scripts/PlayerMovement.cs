@@ -51,9 +51,15 @@ public class PlayerMovement : MonoBehaviour
             FindObjectOfType<AudioManager>().Play("Jump");
         }
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetKeyDown("r"))
         {
-            ToggleGhost();
+            controlTime.RevertTime();
+        }
+
+        if (Input.GetKeyDown("f"))
+        {
+            controlTime.ResetGhost();
+
         }
 
         UpdateAnimationState();
@@ -113,11 +119,6 @@ public class PlayerMovement : MonoBehaviour
         doubleJumpAvailable = recordObject.storedFrames[0].doubleJumpAvailable;
 
         recordObject.ResetGhost();
-    }
-
-    private void ToggleGhost()
-    {
-        controlTime.RevertTime();
     }
 }
 

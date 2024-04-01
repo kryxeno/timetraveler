@@ -29,7 +29,6 @@ public class Lever : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && canInteract)
         {
             Debug.Log("E pressed");
-            FindObjectOfType<AudioManager>().Play("Click");
             UpdateLeverPosition();
         }
 
@@ -55,6 +54,7 @@ public class Lever : MonoBehaviour
     {
         active = !active;
         state = active ? MovementState.on : MovementState.off;
+        FindObjectOfType<AudioManager>().Play(active ? "Click" : "ClickOff");
 
         anim.SetInteger("state", (int)state);
 
